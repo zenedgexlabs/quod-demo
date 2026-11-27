@@ -14,6 +14,11 @@ def test_read_csv(books):
     assert books.balance("cash") == Money(4_50)
 
 
+def test_semicolon_separated(books):
+    assert read_csv(books, "2024-01-02;owner invests;bank;capital;1000.00\n") == 1
+    assert books.balance("bank") == Money(1_000_00)
+
+
 def test_blank_lines_and_comments(books):
     assert read_csv(books, "\n# nothing\n\n") == 0
 
