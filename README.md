@@ -22,12 +22,17 @@ Open a pull request's **Checks** tab, then the `quod` job's summary, for
 the Verdict card. The `quod-verdict` artifact has the signed Verdict, the
 plan (every test, run or skipped, with its reason) and the results.
 
-- **A change to one function.** The pull request *importers: accept
-  semicolon-separated files* changes the body of `read_csv`. Quod runs the
-  4 tests that call it and skips the other 55.
-- **A bug.** The pull request *currency: round conversions down* breaks
-  `convert`. Quod runs the tests that reach `convert`, they fail, and the
-  Verdict blocks the merge.
+- **[#1](https://github.com/zenedgexlabs/quod-demo/pull/1), a change to
+  one function.** It changes the body of `read_csv` and adds a test. Quod
+  runs the 4 tests that reach `read_csv`, plus the new one, and skips the
+  other 55. The test files it skips entirely aren't even collected.
+- **[#2](https://github.com/zenedgexlabs/quod-demo/pull/2), a bug.** It
+  changes how `Money.allocate` rounds, and hands out cents that don't
+  exist. Quod runs the 36 tests that reach `allocate`, 7 fail, and the
+  Verdict blocks the merge. The slow tests of the other modules are
+  skipped.
+
+Neither pull request will be merged: they stay open as examples.
 
 [Open pull requests](https://github.com/zenedgexlabs/quod-demo/pulls)
 
