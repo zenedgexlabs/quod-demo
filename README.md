@@ -38,7 +38,7 @@ packages, environment). A pull request is compared with the map of its
 merge base. That's the whole setup: one step in the workflow,
 
 ```yaml
-      - uses: zenedgexlabs/quod-action@v0.1.0-alpha.3
+      - uses: zenedgexlabs/quod-action@v0.1.0-alpha.4
         with:
           mode: ${{ github.event_name == 'push' && 'record' || 'enforce' }}
           test-command: python -m pytest -q

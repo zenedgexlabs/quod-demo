@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.13' }
       - run: pip install -e .[test]
-      - uses: zenedgexlabs/quod-action@v0.1.0-alpha.3
+      - uses: zenedgexlabs/quod-action@v0.1.0-alpha.4
         with:
           mode: ${{ github.event_name == 'push' && 'record' || 'enforce' }}
           test-command: python -m pytest -q
