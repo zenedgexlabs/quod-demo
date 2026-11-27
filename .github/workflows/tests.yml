@@ -1,0 +1,35 @@
+name: tests
+on:
+  push: { branches: [main] }
+  pull_request:
+
+jobs:
+  # For comparison: the whole suite, as most projects run it today.
+  pytest:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.13' }
+      - run: pip install -e .[test]
+      - run: python -m pytest -q
+
+  # Quod: on main it records what every test depends on; on a pull request
+  # it runs only the tests the change can affect and signs a Verdict.
+  quod:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.13' }
+      - run: pip install -e .[test]
+      - uses: zenedgexlabs/quod-action@v0.1.0-alpha.3
+        with:
+          mode: ${{ github.event_name == 'push' && 'record' || 'enforce' }}
+          test-command: python -m pytest -q
+          python: python
+          signing-key: ${{ secrets.QUOD_SIGNING_KEY }}
