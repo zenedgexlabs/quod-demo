@@ -10,9 +10,11 @@ from .money import Money
 
 def read_csv(ledger: Ledger, text: str) -> int:
     """Posts one transaction per row of `date,memo,debit_account,credit_account,amount[,currency]`.
+    Semicolon-separated files (common in European exports) are accepted too.
     Returns the number of transactions posted."""
     n = 0
-    for row in csv.reader(io.StringIO(text)):
+    delimiter = ";" if text.count(";") > text.count(",") else ","
+    for row in csv.reader(io.StringIO(text), delimiter=delimiter):
         if not row or row[0].startswith("#"):
             continue
         when, memo, debit, credit, amount, *rest = (c.strip() for c in row)
