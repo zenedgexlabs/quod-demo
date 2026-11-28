@@ -39,7 +39,8 @@ class Money:
         total = sum(ratios)
         if total <= 0:
             raise ValueError("ratios must sum to a positive number")
-        parts = [self.cents * r // total for r in ratios]
+        # Round each share to the nearest cent, then hand out what's left.
+        parts = [round(self.cents * r / total) for r in ratios]
         for i in range(self.cents - sum(parts)):
             parts[i % len(parts)] += 1
         return [Money(p, self.currency) for p in parts]
